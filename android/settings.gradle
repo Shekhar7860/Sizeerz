@@ -1,0 +1,3 @@
+rootProject.name = 'sizzerz'
+
+include ':app'
