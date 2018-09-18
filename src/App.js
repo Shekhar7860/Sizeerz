@@ -6,6 +6,7 @@ import Home from './components/Home';
 import SignUp from './components/SignUp';
 import Splash from './components/Splash';
 import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
 
 // Sidemenu
 export const Menu = DrawerNavigator({
@@ -16,10 +17,11 @@ export const Menu = DrawerNavigator({
 // routing 
 const AppNavigator = StackNavigator(
   {
-    Splash: { screen: Splash },
+    Splash: { screen: SignUp },
     Login: { screen: Login},
     Home: { screen: Menu},
-    SignUp: { screen: SignUp}
+    SignUp: { screen: SignUp},
+    ForgotPassword:{ screen : ForgotPassword}
   },
   { headerMode: 'none' }
 );

@@ -19,7 +19,7 @@ export default class Splash extends Component {
         source={require('../images/splash.png')}
         style={styles.container}>
       <ActivityIndicator animating={true} size="large" 
-        color="#00ff00" />
+        color="#00ff00" style={styles.splashLoading}/>
         </ImageBackground>
     );
   }
