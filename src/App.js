@@ -17,7 +17,7 @@ export const Menu = DrawerNavigator({
 // routing 
 const AppNavigator = StackNavigator(
   {
-    Splash: { screen: SignUp },
+    Splash: { screen: Login},
     Login: { screen: Login},
     Home: { screen: Menu},
     SignUp: { screen: SignUp},

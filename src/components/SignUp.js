@@ -9,7 +9,7 @@ export default class SignuUp extends Component {
    }
   render() {
     return (
-      <ScrollView>
+    
       <ImageBackground
         source={require('../images/bg.png')}
         style={styles.container}>
@@ -20,7 +20,7 @@ export default class SignuUp extends Component {
           </View>
           <View style={styles.imageContainer}>
               <Image
-              source={require('../images/3.png')}
+              source={require('../images/1.png')}
               style={styles.imageWidth}/>
           </View> 
           <View style={styles.centerAlign}>
@@ -67,7 +67,7 @@ export default class SignuUp extends Component {
       
       
       </ImageBackground>
-      </ScrollView>
+      
     );
 }
 

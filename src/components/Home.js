@@ -1,30 +1,36 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image, ImageBackground, Button} from 'react-native';
+import {Platform, StyleSheet, Text, View, Image, ImageBackground, Button, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
 
 export default class Home extends Component {
-    openDrawer2 = () =>{
-        console.log(this.props);
+    openDrawer = () =>{
+        // console.log(this.props);
         this.props.navigation.navigate('DrawerOpen')}
+    searchPage = () =>{
+    alert("searching Page")
+          
+        }
   render() {
     return (
-      <View style={styles.mainContainer}>
-      <View style={styles.toolbar}>
-           <Text style={styles.toolbarButton}>Add</Text>
-           <Text style={styles.toolbarTitle}>This is the title</Text>
-           <Text style={styles.toolbarButton}>Like</Text>
+        <ImageBackground
+        source={require('../images/bg03.png')}
+        style={styles.container}>
+      
+      <View style={styles.toolbar} >
+          <TouchableNativeFeedback onPress={() => this.openDrawer()}>
+          <Image source={require('../images/menu.png')} style={styles.hamburgerIcon} />
+          </TouchableNativeFeedback>
+           <Text style={styles.toolbarTitle}>Home</Text>
+           <TouchableNativeFeedback onPress={() => this.searchPage()}>
+          <Image source={require('../images/search.png')} style={styles.searchIcon} />
+          </TouchableNativeFeedback>
        </View>
-       <View style={styles.content}>
+       <View style={styles.homeContent}>
            <View style={styles.messageBox}>
-               <View>
-                   <Text style={styles.messageBoxTitleText}>A simple mesage</Text>
-               </View>
-               <View>
-                   <Text style={styles.messageBoxBodyText}>This is just a dummy sample it will help us to see the alignment in action.</Text>
-               </View>
+           <Image source={require('../images/home_img.png')} style={styles.cardImage}/>
            </View>
        </View>
-   </View>
+   </ImageBackground>
       
      
     );

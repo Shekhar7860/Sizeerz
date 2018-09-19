@@ -19,8 +19,7 @@ export default styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width: undefined,
-    height: undefined
+    resizeMode: 'cover'
    
   },
   loginText: {
@@ -39,9 +38,10 @@ export default styles = StyleSheet.create({
      width:'80%',
      backgroundColor:'#fff',
      padding:10,
-     height:200,
+     height:190,
      borderColor: 'black',
-     borderWidth: 1
+     borderWidth: 1,
+     marginTop:-10,
      
    
    
@@ -49,13 +49,11 @@ export default styles = StyleSheet.create({
     },
    
     messageBox:{
-      backgroundColor:'#ef553a',
-      width:300,
-      paddingTop:10,
-      paddingBottom:20,
-      paddingLeft:20,
-      paddingRight:20, 
-      borderRadius:10
+      width:'90%',
+      paddingTop:5,
+      alignItems:'center',
+    
+      height:240
   },
   messageBoxTitleText:{
       fontWeight:'bold',
@@ -65,10 +63,11 @@ export default styles = StyleSheet.create({
       marginBottom:10
   },
   toolbar:{
-    backgroundColor:'#81c04d',
-    paddingTop:30,
+   
+    paddingTop:20,
     paddingBottom:10,
-    flexDirection:'row'    //Step 1
+    flexDirection:'row'
+     //Step 1
 },
 toolbarButton:{
     width: 50,            //Step 2
@@ -93,7 +92,6 @@ toolbarTitle:{
   imgContainer:{
     padding:10,
     width:'90%',
-    flex:1,
     alignItems:'flex-start',
   },
   topText:{
@@ -133,6 +131,10 @@ toolbarTitle:{
     paddingTop:2,
     width:50
   },
+  borderWidthForgot : {
+    paddingTop:2,
+    width:127
+  },
   textInputContainer:{
     flex: 1,
     flexDirection: 'row',
@@ -146,7 +148,6 @@ toolbarTitle:{
   },
   iconWidth:{
     width:30,
-    
     height:30
   },
   labelWidth:{
@@ -181,6 +182,11 @@ icon:{
   height:20,
   marginTop:12
 },
+socialIcon:{
+  width:40,
+  height:40,
+  marginTop:12
+},
 border:{
   borderBottomColor: 'black',
   borderBottomWidth: 1,
@@ -194,7 +200,7 @@ rowAlign:{
 
 },
 loginContainer:{
-  flex:1,
+
   alignItems:'center'
   
   
@@ -211,8 +217,8 @@ width:70,
 textAlign:'center',
 height:30,
 borderRadius:10,
-position:'absolute',
-bottom:-11,
+position:'relative',
+bottom:14,
 paddingTop:4,
  },
  center:{
@@ -255,10 +261,17 @@ cardContainerSignUp:{
   height:270,
   borderColor: 'black',
   borderWidth: 1,
-  marginTop:-50,
+  marginTop:-30,
   backgroundColor:'#fff',
-
-
+ },
+ cardContainerForgot:{
+  width:'80%',
+  padding:10,
+  height:200,
+  borderColor: 'black',
+  borderWidth: 1,
+  marginTop:-40,
+  backgroundColor:'#fff',
  },
  topSpace:{
    marginTop:0
@@ -273,6 +286,27 @@ cardContainerSignUp:{
   position:'relative',
   bottom:13,
   paddingTop:5,
-   }
-    
+   },
+   forgotText:{
+     paddingTop:padding.md
+   },
+   hamburgerIcon:{
+     width:30,
+     height:30,
+    marginLeft:25},
+    searchIcon:{
+      width:30,
+      height:30,
+     marginRight:25},
+     homeContent:{
+       alignItems:'center',
+       width:'100%'
+     },
+     cardImage:{
+       width:'90%',
+       height:220,
+       borderRadius:25,
+     
+     }
+   
 })

@@ -2,9 +2,70 @@ import React, {Component} from 'react';
 import {Platform, Text, View, TextInput, Image, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
 import FloatingLabelInput from './FloatingLabel';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 
+
+GoogleSignin.configure({
+  scopes: ['https://www.googleapis.com/auth/drive.readonly'], 
+  webClientId: '893224975013-7d7mmu5atns1on05np9j0ijc8r3ua945.apps.googleusercontent.com', 
+  offlineAccess: true, 
+  hostedDomain: '', 
+  forceConsentPrompt: true,
+  accountName: '', 
+});
 export default class Login extends Component {
+
+  componentDidMount() {
+    this.setupGoogleSignin();
+  } 
+
+  async setupGoogleSignin() {
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.configure({
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'], 
+        webClientId: '893224975013-7d7mmu5atns1on05np9j0ijc8r3ua945.apps.googleusercontent.com', 
+        offlineAccess: true, 
+        hostedDomain: '', 
+        forceConsentPrompt: true,
+        accountName: '', 
+      });
+    }
+    catch (err) {
+      console.log("Google signin error", err.code, err.message);
+    }
+  }
   
+  signIn = async () => {
+    try {
+    await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo)
+      this.setState({ userInfo });
+    } catch (error) {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+  googleAuth() {
+    GoogleSignin.signIn()
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((err) => {
+        console.log('WRONG SIGNIN', err);
+      })
+      .done();
+  }
+ 
       goToSignUp = () =>{
        this.props.navigation.navigate('SignUp')
       }
@@ -24,7 +85,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <ScrollView>
+      
       <ImageBackground
         source={require('../images/bg.png')}
         style={styles.container}>
@@ -33,7 +94,7 @@ export default class Login extends Component {
           </View>
           <View style={styles.imageContainer}>
               <Image
-              source={require('../images/3.png')}
+              source={require('../images/1.png')}
               style={styles.imageWidth}/>
           </View> 
           <View style={styles.centerAlign}>
@@ -66,7 +127,8 @@ export default class Login extends Component {
              </View>
 
       <View style={styles.center}>
-      <Text styles={styles.center} onPress={() => this.goToForgot()}>ForgotPassword ?</Text>
+      
+      <Text styles={styles} onPress={() => this.goToForgot()}>ForgotPassword ?</Text>
       <View style={styles.borderWidth2}>
       <View
         style={styles.textBorder2}
@@ -96,8 +158,10 @@ export default class Login extends Component {
       </View>
       
       <View style={styles.rowAlign3}>
-      <Image source={require('../images/fb.png')} style={styles.icon}/>
-      <Image source={require('../images/gmail.png')} style={styles.icon}/>
+      <Image source={require('../images/fb.png')} style={styles.socialIcon}/>
+      <TouchableNativeFeedback onPress={() => this.googleAuth()}>
+      <Image source={require('../images/gmail.png')} style={styles.socialIcon} />
+      </TouchableNativeFeedback>
       
       
       
@@ -105,10 +169,11 @@ export default class Login extends Component {
       <View style={styles.bottomText}>
         <Text>You Dont Have An Account? <Text style={styles.red} onPress={() => this.goToSignUp()}>Sign up</Text></Text>
       </View>
+      
       </View>
       
       </ImageBackground>
-      </ScrollView>
+     
     );
   }
 }
