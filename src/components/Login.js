@@ -2,33 +2,44 @@ import React, {Component} from 'react';
 import {Platform, Text, View, TextInput, Image, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
 import FloatingLabelInput from './FloatingLabel';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { LoginManager,   AccessToken } from 'react-native-fbsdk';
+import Service from '../services/Service';
 
 
-GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'], 
-  webClientId: '893224975013-7d7mmu5atns1on05np9j0ijc8r3ua945.apps.googleusercontent.com', 
-  offlineAccess: true, 
-  hostedDomain: '', 
-  forceConsentPrompt: true,
-  accountName: '', 
-});
+
 export default class Login extends Component {
-
+  constructor(props){
+    super(props);
+    service = new Service();
+  }
   componentDidMount() {
     this.setupGoogleSignin();
   } 
 
+  fbSignIn = () =>{
+    LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
+      result => {
+        AccessToken.getCurrentAccessToken().then(
+          (data) => {
+                console.log(data.accessToken)
+                this.getUserProfile(data.accessToken);
+                console.log(data.userID);
+      });
+      },
+      error => {
+        console.log('Login fail with error: ' + error);
+      }
+    );
+  }
+
+
   async setupGoogleSignin() {
     try {
-      await GoogleSignin.hasPlayServices();
-      await GoogleSignin.configure({
-        scopes: ['https://www.googleapis.com/auth/drive.readonly'], 
-        webClientId: '893224975013-7d7mmu5atns1on05np9j0ijc8r3ua945.apps.googleusercontent.com', 
-        offlineAccess: true, 
-        hostedDomain: '', 
-        forceConsentPrompt: true,
-        accountName: '', 
+      GoogleSignin.configure({
+        clientID: '893224975013-3s5d4o0oo9bp83k1dr8ttfa7ois0in3u.apps.googleusercontent.com',
+        scopes: ['openid', 'email', 'profile'],
+        shouldFetchBasicProfile: true,
       });
     }
     catch (err) {
@@ -36,36 +47,49 @@ export default class Login extends Component {
     }
   }
   
-  signIn = async () => {
-    try {
-    await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo)
-      this.setState({ userInfo });
-    } catch (error) {
-      console.log(error);
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (f.e. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
+  
+    signIn = async () => {
+      
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        console.log(userInfo);
+      } catch (error) {
+        console.log(error);
+        this.props.navigation.navigate('Home')
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          // user cancelled the login flow
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          // operation (f.e. sign in) is in progress already
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          // play services not available or outdated
+        } else {
+          // some other error happened
+        }
       }
-    }
-  };
-  googleAuth() {
-    GoogleSignin.signIn()
-      .then((user) => {
-        console.log(user);
+    };
+  
+
+
+  getUserProfile = (token) =>{ 
+      fetch('https://graph.facebook.com/v2.9/me?fields=picture.width(720).height(720).as(picture_large),name,email,friends&access_token=' + token)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('loginpage', json);
+       service.saveUserData('user', json);
+        this.props.navigation.navigate('Home', { user: json })
       })
       .catch((err) => {
-        console.log('WRONG SIGNIN', err);
+      //  alert(JSON.stringify(err))
       })
-      .done();
+     
+      
+   
   }
- 
+  logout = () => {
+    LoginManager.logOut();
+  }
+  
       goToSignUp = () =>{
        this.props.navigation.navigate('SignUp')
       }
@@ -125,9 +149,7 @@ export default class Login extends Component {
               <Text style={styles.loginbutton} >Login</Text>
             </TouchableNativeFeedback>
              </View>
-
       <View style={styles.center}>
-      
       <Text styles={styles} onPress={() => this.goToForgot()}>ForgotPassword ?</Text>
       <View style={styles.borderWidth2}>
       <View
@@ -135,18 +157,15 @@ export default class Login extends Component {
               >
       </View>
       </View>
-     
-      
       <View style={styles.rowAlign2}>
       <View style={styles.borderWidth3}>
       <View
         style={styles.textBorder2}
               >
-                </View>
       </View>
-      
+      </View>
       <View style={styles.center}>
-      <Text styles={styles.textCenter}>Or Connect With</Text>
+      <Text styles={styles.textCenter} onPress={() => this.logout()}>Or Connect With</Text>
       </View>
       <View style={styles.borderWidth3}>
       <View
@@ -154,24 +173,19 @@ export default class Login extends Component {
               >
                 </View>
       </View>
-      
       </View>
-      
       <View style={styles.rowAlign3}>
+      <TouchableNativeFeedback onPress={() => this.fbSignIn()}>
       <Image source={require('../images/fb.png')} style={styles.socialIcon}/>
-      <TouchableNativeFeedback onPress={() => this.googleAuth()}>
+      </TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={() => this.signIn()}>
       <Image source={require('../images/gmail.png')} style={styles.socialIcon} />
       </TouchableNativeFeedback>
-      
-      
-      
       </View>
       <View style={styles.bottomText}>
         <Text>You Dont Have An Account? <Text style={styles.red} onPress={() => this.goToSignUp()}>Sign up</Text></Text>
       </View>
-      
       </View>
-      
       </ImageBackground>
      
     );

@@ -3,15 +3,30 @@ import {Platform, StyleSheet, Text, View, Image, ImageBackground, Button, Toucha
 import styles from '../styles/styles';
 
 export default class Home extends Component {
+ constructor(props){
+     super(props);
+     this.state = {
+        userData: { picture_large:{ data:{}}},
+      };
+   
+ }
+ componentDidMount() {
+    if(this.props.navigation.state.params != undefined){
+        console.log(this.props.navigation.state.params.user);
+        this.setState({userData: this.props.navigation.state.params.user});
+    }
+  } 
+
     openDrawer = () =>{
-        // console.log(this.props);
         this.props.navigation.navigate('DrawerOpen')}
+
     searchPage = () =>{
-    alert("searching Page")
-          
+    alert("searching Page")   
         }
   render() {
+    console.log('test', this.state.userData.picture_large.data.url);
     return (
+        
         <ImageBackground
         source={require('../images/bg03.png')}
         style={styles.container}>

@@ -7,11 +7,16 @@ import SignUp from './components/SignUp';
 import Splash from './components/Splash';
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
+import SideMenu from './components/SideMenu';
 
 // Sidemenu
 export const Menu = DrawerNavigator({
   Home: { screen: Home},
   SignUp: { screen: SignUp},
+  
+}, {
+  contentComponent: SideMenu,
+  drawerWidth: 300
 });
 
 // routing 

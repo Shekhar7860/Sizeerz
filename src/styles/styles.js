@@ -307,6 +307,20 @@ cardContainerSignUp:{
        height:220,
        borderRadius:25,
      
-     }
-   
+     },
+     sideMenu:{
+     alignItems:'center',
+     
+     },
+    profilePic:{
+      marginTop:30,
+      borderRadius:100,
+      width:'40%',
+     height:'40%'
+    
+    },
+    userName:{
+      paddingTop:10,
+      color:colors.white
+    }
 })
