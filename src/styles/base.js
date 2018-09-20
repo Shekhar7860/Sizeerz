@@ -8,7 +8,12 @@ export const colors  = {
   primary: '#226B74',
   secondary: '#254B5A',
   tertiary: '#5DA6A7',
-  white:'#fff'
+  white:'#fff',
+  red:'#ff0000',
+  black:'#000000',
+  transparent:"#95a5a6",
+  orange:'#d35400',
+  carrot:'#e67e22'
 }
 export const padding = {
   sm: 10,
@@ -21,4 +26,10 @@ export const fonts = {
   md: 18,
   lg: 28,
   primary: 'Cochin'
+}
+export const align = {
+ center:'center',
+ left:'flex-start',
+ right:'flex-end',
+
 }

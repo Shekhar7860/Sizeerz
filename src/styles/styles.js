@@ -1,9 +1,8 @@
 // global styles 
-import {colors, fonts, padding, dimensions} from './base.js'
-import {StyleSheet} from 'react-native';
+import {colors, fonts, padding, dimensions, align} from './base.js'
+import {StyleSheet, Platform} from 'react-native';
 export default styles = StyleSheet.create({
   container: {
-   
     width: dimensions.fullWidth
   },
   header: {
@@ -15,15 +14,14 @@ export default styles = StyleSheet.create({
     paddingHorizontal: padding.xl
   },
   red: {
-    color:'red'
+    color:colors.red
   },
   container: {
     flex: 1,
     resizeMode: 'cover'
-   
   },
   loginText: {
-    color:'red',
+    color:colors.red,
     padding:padding.sm,
     },
     alignrow:{
@@ -36,52 +34,45 @@ export default styles = StyleSheet.create({
     },
     cardContainer:{
      width:'80%',
-     backgroundColor:'#fff',
-     padding:10,
-     height:190,
-     borderColor: 'black',
+     backgroundColor:colors.white,
+     padding:padding.sm,
+     height:225,
+     borderColor: colors.black,
      borderWidth: 1,
-     marginTop:-10,
-     
-   
-   
-
-    },
-   
+     marginTop:-padding.sm,
+    }, 
     messageBox:{
       width:'90%',
       paddingTop:5,
-      alignItems:'center',
-    
+      alignItems:align.center,
       height:240
   },
   messageBoxTitleText:{
       fontWeight:'bold',
-      color:'#fff',
-      textAlign:'center',
+      color:colors.white,
+      textAlign:align.center,
       fontSize:20,
-      marginBottom:10
+      marginBottom:padding.sm
   },
   toolbar:{
-   
     paddingTop:20,
-    paddingBottom:10,
+    paddingBottom:padding.sm,
     flexDirection:'row'
      //Step 1
 },
 toolbarButton:{
     width: 50,            //Step 2
-    color:'#fff',
-    textAlign:'center'
+    color:colors.white,
+    textAlign:align.center
 },
 toolbarTitle:{
-    color:'#fff',
-    textAlign:'center',
+    color:colors.white,
+    textAlign:align.center,
     fontWeight:'bold',
     flex:1                //Step 3
  },
   messageBoxBodyText:{
-      color:'#fff',
+      color:colors.white,
       fontSize:16
   },
   textContainer:{
@@ -90,37 +81,35 @@ toolbarTitle:{
     alignItems:'flex-end',
   },
   imgContainer:{
-    padding:10,
+    padding:padding.sm,
     width:'90%',
     alignItems:'flex-start',
   },
   topText:{
-    color:'white',
+    color:colors.white,
     textAlign:'left',
     fontSize:20,
     fontWeight:'bold'
   },
   splashLoading:{
     flex:1,
-  justifyContent:'center'
+  justifyContent:align.center
   },
   imageContainer:{
     paddingTop:5,
-    alignItems:'center',
+    alignItems:align.center,
   },
   imageWidth:{
   },
   centerAlign :{
-   alignItems:'center',
+   alignItems:align.center,
    paddingTop:70,
- 
-   
   },
   loginText:{
-    color:'red',
+    color:colors.red,
   },
   textBorder:{
-    borderBottomColor: 'red',
+    borderBottomColor: colors.red,
     borderBottomWidth: 1
   },
   borderWidth : {
@@ -138,43 +127,39 @@ toolbarTitle:{
   textInputContainer:{
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
   textInputContainer2:{
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    paddingTop:10
+    backgroundColor: colors.white,
+    paddingTop:padding.sm
   },
   iconWidth:{
     width:30,
     height:30
   },
-  labelWidth:{
-  
-    
-    
-  },
   float:{
-    flex: 1, backgroundColor: '#f5fcff'
+    flex: 1, 
+    backgroundColor: '#f5fcff'
   },
   searchSection: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: align.center,
+    alignItems: align.center,
+    backgroundColor: colors.white,
 },
 searchIcon: {
-    padding: 10,
+    padding: padding.sm,
 },
 input: {
     flex: 1,
-    paddingTop: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
+    paddingTop: padding.sm,
+    paddingRight: padding.sm,
+    paddingBottom: padding.sm,
     paddingLeft: 0,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     color: '#424242',
 },
 icon:{
@@ -188,101 +173,92 @@ socialIcon:{
   marginTop:12
 },
 border:{
-  borderBottomColor: 'black',
+  borderBottomColor: colors.black,
   borderBottomWidth: 1,
   flex:1
 },
 rowAlign:{
   flexDirection:'row',
-  borderBottomColor: 'black',
+  borderBottomColor: colors.black,
   borderBottomWidth: 1
-  
-
 },
 loginContainer:{
-
-  alignItems:'center'
-  
-  
-  
+  alignItems:align.center
 },
 buttonWidth:{
   width:300,
-  alignItems:'center'
+  alignItems:align.center
 },
 loginbutton:{
-backgroundColor:'red',
-color:'white',
+backgroundColor:colors.red,
+color:colors.white,
 width:70,
-textAlign:'center',
+textAlign:align.center,
 height:30,
-borderRadius:10,
+borderRadius:padding.sm,
 position:'relative',
 bottom:14,
 paddingTop:4,
  },
  center:{
    paddingTop:20,
-   alignItems:'center'
+   alignItems:align.center
  },
  borderWidth2 : {
   paddingTop:2,
   width:98
 },
 textBorder2:{
-  borderBottomColor: 'black',
+  borderBottomColor: colors.black,
   borderBottomWidth: 1
 },
 rowAlign2:{
   flexDirection:'row',
-  alignItems:'center',
-  
+  alignItems:align.center
 },
 rowAlign3:{
   flexDirection:'row',
-  alignItems:'center',
+  alignItems:align.center,
   paddingTop:5
-  
 },
 textCenter:{
-  textAlign:'center'
+  textAlign:align.center
 },
 borderWidth3 : {
   paddingTop:18,
   width:95
 },
 bottomText:{
-  alignItems:'center',
-  paddingTop:10
+  alignItems:align.center,
+  paddingTop:padding.sm
 },
 cardContainerSignUp:{
   width:'80%',
-  padding:10,
-  height:270,
-  borderColor: 'black',
+  padding:padding.sm,
+  borderColor: colors.black,
   borderWidth: 1,
   marginTop:-30,
-  backgroundColor:'#fff',
+  backgroundColor:colors.white,
  },
  cardContainerForgot:{
   width:'80%',
-  padding:10,
-  height:200,
-  borderColor: 'black',
+  padding:padding.sm,
+  height:220,
+  borderColor: colors.black,
   borderWidth: 1,
   marginTop:-40,
-  backgroundColor:'#fff',
+  backgroundColor:colors.white,
  },
  topSpace:{
    marginTop:0
  },
  signUpButton:{
-  backgroundColor:'red',
-  color:'white',
+  backgroundColor:colors.red,
+  color:colors.white,
   width:83,
-  textAlign:'center',
+  textAlign:align.center,
   height:30,
-  borderRadius:10,
+  borderRadius:padding.sm,
   position:'relative',
   bottom:13,
   paddingTop:5,
@@ -299,28 +275,76 @@ cardContainerSignUp:{
       height:30,
      marginRight:25},
      homeContent:{
-       alignItems:'center',
+       alignItems:align.center,
        width:'100%'
      },
      cardImage:{
        width:'90%',
        height:220,
        borderRadius:25,
-     
      },
      sideMenu:{
-     alignItems:'center',
-     
+     alignItems:align.center,
      },
     profilePic:{
       marginTop:30,
       borderRadius:100,
       width:'40%',
      height:'40%'
-    
     },
     userName:{
-      paddingTop:10,
+      paddingTop:padding.sm,
       color:colors.white
-    }
+    },
+    error:{
+      color:colors.red,
+      paddingTop:5
+    },
+    MainContainer :{
+    
+      flex:1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: (Platform.OS == 'ios') ? 20 : 0,
+      margin:10
+       
+      },
+       
+      animatedToastView:
+      {
+         marginHorizontal: 30,
+         paddingHorizontal: 25,
+         paddingVertical: 10,
+         borderRadius: 25,
+         zIndex: 9999,
+         position: 'absolute',
+         justifyContent: 'center'
+      },
+      
+      ToastBoxInsideText:
+      {
+         fontSize: 15,
+         alignSelf: 'stretch',
+         textAlign: 'center'
+      },
+      toast:{
+        alignItems:align.center,
+        marginTop:-40
+      },
+      modalBackground: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        backgroundColor: '#00000040'
+      },
+      activityIndicatorWrapper: {
+        backgroundColor: '#FFFFFF',
+        height: 100,
+        width: 100,
+        borderRadius: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around'
+      }
 })

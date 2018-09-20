@@ -1,17 +1,29 @@
 import React, {Component} from 'react';
-import {Platform, Text, View, TextInput, Image, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
+import {Platform, Text, View, TextInput, Image, ToastAndroid, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
-import FloatingLabelInput from './FloatingLabel';
 import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { LoginManager,   AccessToken } from 'react-native-fbsdk';
 import Service from '../services/Service';
+import Constants from '../constants/Constants';
+import CustomToast from './CustomToast';
+import Loader from './Loader';
+
 
 
 
 export default class Login extends Component {
   constructor(props){
     super(props);
+    this.state = { 
+      email:'',
+      password:'',
+      emailError:'',
+      passwordError:'',
+      emailFormatError:'',
+      loading: false
+    }
     service = new Service();
+    constants = new Constants();
   }
   componentDidMount() {
     this.setupGoogleSignin();
@@ -37,7 +49,7 @@ export default class Login extends Component {
   async setupGoogleSignin() {
     try {
       GoogleSignin.configure({
-        clientID: '893224975013-3s5d4o0oo9bp83k1dr8ttfa7ois0in3u.apps.googleusercontent.com',
+        clientID: '494192112066-0m441va33bf6n4bnl8qaj892ededod9a.apps.googleusercontent.com',
         scopes: ['openid', 'email', 'profile'],
         shouldFetchBasicProfile: true,
       });
@@ -49,23 +61,13 @@ export default class Login extends Component {
   
   
     signIn = async () => {
-      
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
-        console.log(userInfo);
+        console.log(userInfo.user);
+      service.saveUserData('user', userInfo.user);
+        this.props.navigation.navigate('Home');
       } catch (error) {
-        console.log(error);
-        this.props.navigation.navigate('Home')
-        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-          // user cancelled the login flow
-        } else if (error.code === statusCodes.IN_PROGRESS) {
-          // operation (f.e. sign in) is in progress already
-        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          // play services not available or outdated
-        } else {
-          // some other error happened
-        }
       }
     };
   
@@ -75,8 +77,8 @@ export default class Login extends Component {
       fetch('https://graph.facebook.com/v2.9/me?fields=picture.width(720).height(720).as(picture_large),name,email,friends&access_token=' + token)
       .then((response) => response.json())
       .then((json) => {
-        console.log('loginpage', json);
-       service.saveUserData('user', json);
+       // console.log('loginpage', json);
+        service.saveUserData('user', json);
         this.props.navigation.navigate('Home', { user: json })
       })
       .catch((err) => {
@@ -86,15 +88,53 @@ export default class Login extends Component {
       
    
   }
-  logout = () => {
-    LoginManager.logOut();
-  }
+
+  logOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      this.setState({ user: null }); // Remember to remove the user from your app's state as well
+    } catch (error) {
+      console.error(error);
+    }
+  };
   
       goToSignUp = () =>{
        this.props.navigation.navigate('SignUp')
       }
-      goToHome = () =>{
-        this.props.navigation.navigate('Home')
+      login = () =>{
+        if ( !service.validateEmail(this.state.email)) {
+          this.setState(() => ({ emailFormatError: "Proper Email Format is Required"}));
+        } 
+        else{
+          this.setState(() => ({ emailFormatError: null}));
+        }
+        if (this.state.email.trim() === "") {
+          this.setState(() => ({ emailError: " Email is required."}));
+          this.setState(() => ({ emailFormatError: null}));
+        } else {
+          this.setState(() => ({ emailError: null})); 
+        }
+        if (this.state.password.trim() === "") {
+          this.setState(() => ({ passwordError: " Password is required."}));
+        } else {
+          this.setState(() => ({ passwordError: null}));
+        }
+        
+        if(this.state.email && this.state.password)
+        {
+         this.setState ({ loading: true});
+          setTimeout(() => 
+          {this.setState({loading: false})
+          this.props.navigation.navigate('Home')
+           }, 3000)
+          }
+        
+
+       
+      //  this.refs.defaultToastBottom.ShowToastFunction('Login SuccessFull');
+      
+       // alert(this.state.password)
        }
        goToForgot = () =>{
         this.props.navigation.navigate('ForgotPassword')
@@ -102,23 +142,24 @@ export default class Login extends Component {
       
       state = {
       value: '',
-  };
+   };
 
   handleTextChange = (newText) => this.setState({ value: newText });
 
 
   render() {
+    console.log(constants.logo);
     return (
       
       <ImageBackground
-        source={require('../images/bg.png')}
+        source={constants.background}
         style={styles.container}>
           <View style={styles.textContainer}>
             <Text style={styles.topText} onPress={() => this.goToHome()}>Skip</Text>
           </View>
           <View style={styles.imageContainer}>
               <Image
-              source={require('../images/1.png')}
+              source={constants.logo}
               style={styles.imageWidth}/>
           </View> 
           <View style={styles.centerAlign}>
@@ -131,21 +172,34 @@ export default class Login extends Component {
                 </View>
                 <View style={{flex:1}}>
              <View style={styles.rowAlign}>
-             <Image source={require('../images/email.png')} style={styles.icon}/>
-             <TextInput placeholder="Email"></TextInput>
+             <Image source={constants.emailicon} style={styles.icon}/>
+             <TextInput placeholder="Emailid" value={this.state.email} onChangeText={(text)=>this.setState({ email:text})}></TextInput>
+            
              </View>
-             <View>
+             {!!this.state.emailError && (
+            <Text style={styles.error}>{this.state.emailError}</Text>
+            )}
+           
+           {!!this.state.emailFormatError && (
+            <Text style={styles.error}>{this.state.emailFormatError}</Text>
+             )}
+            
+             
              <View style={styles.rowAlign}>
-             <Image source={require('../images/password.png')} style={styles.icon}/>
-             <TextInput placeholder="Password" ></TextInput>
+             <Image source={constants.passwordicon} style={styles.icon}/>
+             <TextInput placeholder="Password" value={this.state.password}  secureTextEntry={true} onChangeText={(text)=> this.setState({ password:text})}></TextInput>
              </View>
-             </View>
+             {!!this.state.passwordError && (
+            <Text style={styles.error}>{this.state.passwordError}</Text>
+             )}
+           
+             
              </View>
             
       </View>
       </View>
            <View style={styles.loginContainer} >
-            <TouchableNativeFeedback style={styles.buttonWidth} onPress={() => this.goToHome()}>
+            <TouchableNativeFeedback style={styles.buttonWidth} onPress={() => this.login()}>
               <Text style={styles.loginbutton} >Login</Text>
             </TouchableNativeFeedback>
              </View>
@@ -165,7 +219,7 @@ export default class Login extends Component {
       </View>
       </View>
       <View style={styles.center}>
-      <Text styles={styles.textCenter} onPress={() => this.logout()}>Or Connect With</Text>
+      <Text styles={styles.textCenter} onPress={() => this.logOut()}>Or Connect With</Text>
       </View>
       <View style={styles.borderWidth3}>
       <View
@@ -176,17 +230,24 @@ export default class Login extends Component {
       </View>
       <View style={styles.rowAlign3}>
       <TouchableNativeFeedback onPress={() => this.fbSignIn()}>
-      <Image source={require('../images/fb.png')} style={styles.socialIcon}/>
+      <Image source={constants.fbicon} style={styles.socialIcon}/>
       </TouchableNativeFeedback>
       <TouchableNativeFeedback onPress={() => this.signIn()}>
-      <Image source={require('../images/gmail.png')} style={styles.socialIcon} />
+      <Image source={constants.googleicon} style={styles.socialIcon} />
       </TouchableNativeFeedback>
       </View>
       <View style={styles.bottomText}>
         <Text>You Dont Have An Account? <Text style={styles.red} onPress={() => this.goToSignUp()}>Sign up</Text></Text>
       </View>
+    
+      </View>
+      <View style={styles.toast}>
+      <CustomToast ref = "defaultToastBottom"/>
+      <Loader
+          loading={this.state.loading} />
       </View>
       </ImageBackground>
+    
      
     );
   }
