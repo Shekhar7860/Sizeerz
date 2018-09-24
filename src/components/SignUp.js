@@ -3,6 +3,8 @@ import {Platform, Text, View, TextInput, Image, ImageBackground, TouchableOpacit
 import styles from '../styles/styles';
 import Constants from '../constants/Constants';
 import Service from '../services/Service';
+import CustomToast from './CustomToast';
+import Loader from './Loader';
 export default class SignuUp extends Component {
 
   constructor(props){
@@ -17,6 +19,7 @@ export default class SignuUp extends Component {
       emailFormatError:'',
       mobileError:'',
       emailFormatError:'',
+      loading: false,
       cardheight:300
     }
     service = new Service();
@@ -29,7 +32,7 @@ export default class SignuUp extends Component {
       this.setState(() => ({ emailFormatError: "Proper Email Format is Required"}));
     } 
     else{
-      this.setState(() => ({ emailFormatError: null}));
+      this.setState(() => ({ emailFormatError: ''}));
     }
     if (this.state.email.trim() === "") {
       this.setState(() => ({ emailError: " Email is required."}));
@@ -56,6 +59,17 @@ export default class SignuUp extends Component {
     {
       this.setState(() => ({ cardheight:300}));
     }
+
+    if(this.state.email && this.state.password && this.state.mobile && this.state.confirmPassword && service.validateEmail(this.state.email))
+    {
+      
+     this.setState ({ loading: true});
+      setTimeout(() => 
+      {this.setState({loading: false})
+      this.refs.defaultToastBottom.ShowToastFunction('SignUp SuccessFully');
+      this.props.navigation.navigate('Login')
+       }, 3000)
+      }
 
   
    // alert(this.state.password)
@@ -134,6 +148,11 @@ export default class SignuUp extends Component {
               <Text style={styles.signUpButton} >SIGN UP</Text>
             </TouchableNativeFeedback>
              </View>
+             <View style={styles.toast}>
+             <CustomToast ref = "defaultToastBottom"/>
+            <Loader
+          loading={this.state.loading} />
+          </View>
 
       
       

@@ -18,7 +18,7 @@ export default class Home extends Component {
   
 
     openDrawer = () =>{
-        this.props.navigation.navigate('DrawerOpen')}
+   this.props.navigation.navigate('DrawerOpen')}
 
     searchPage = () =>{
     alert("searching Page")   

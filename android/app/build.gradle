@@ -147,6 +147,9 @@ android {
 }
 
 dependencies {
+  
+    compile project(':react-native-splash-screen')
+    compile project(':react-native-google-analytics-bridge')
    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
    implementation project(':react-native-fbsdk')
     implementation fileTree(dir: "libs", include: ["*.jar"])

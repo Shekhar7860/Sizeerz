@@ -3,6 +3,9 @@ package com.sizzerz;
 import android.app.Application;
 //import com.magus.fblogin.FacebookLoginPackage; 
 import com.facebook.react.ReactApplication;
+
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 //import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
@@ -35,6 +38,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
             new RNGoogleSigninPackage(),
             new FBSDKPackage(mCallbackManager)
            

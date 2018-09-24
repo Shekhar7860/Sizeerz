@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {Platform, Text, View, TextInput, Image, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
+import {Platform, Text, View, TextInput, Image, ImageBackground,  TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
 import Constants from '../constants/Constants';
 import Service from '../services/Service';
-
-export default class ForgotPassword extends Component {
+import CustomToast from './CustomToast';
+import { withNavigation } from "react-navigation";
+import Loader from './Loader';
+ class  ForgotPassword extends Component {
   constructor(props){
     super(props);
     service = new Service();
@@ -12,16 +14,18 @@ export default class ForgotPassword extends Component {
     this.state = { 
       email:'',    
       emailError:'',
-      emailFormatError:''
+      emailFormatError:'',
+      loading:false
     }
   }
 
+ 
   submit = () =>{
     if ( !service.validateEmail(this.state.email)) {
       this.setState(() => ({ emailFormatError: "Proper Email Format is Required"}));
     } 
     else{
-      this.setState(() => ({ emailFormatError: null}));
+      this.setState(() => ({ emailFormatError: ''}));
     }
     if (this.state.email.trim() === "") {
       this.setState(() => ({ emailError: " Email is required."}));
@@ -29,12 +33,25 @@ export default class ForgotPassword extends Component {
     } else {
       this.setState(() => ({ emailError: null})); 
     }
+    if(this.state.email  && service.validateEmail(this.state.email))
+        {
+         this.setState ({ loading: true});
+          setTimeout(() => 
+          {this.setState({loading: false})
+          this.refs.defaultToastBottom.ShowToastFunction('Email Sent Successfully');
+         this.props.navigation.navigate('Login')
+           }, 3000)
+          }
    
     }
 
-  goToLogin = () =>{
+   
+  goToLogin = () => {
     this.props.navigation.navigate('Login')
    }
+
+ 
+   
   render() {
     return (
      
@@ -59,7 +76,7 @@ export default class ForgotPassword extends Component {
                 style={styles.textBorder}
               />
                 </View>
-                <View style={{flex:1}}>
+                <View style={styles.textWidth}>
              <Text style={styles.forgotText}>We just need your registed email address/mobile number to send you password reset</Text>
              <View style={styles.rowAlign}>
              <Image source={constants.emailicon} style={styles.icon}/>
@@ -77,10 +94,16 @@ export default class ForgotPassword extends Component {
               <Text style={styles.signUpButton} >SUBMIT</Text>
             </TouchableNativeFeedback>
              </View>
+             <View style={styles.toast}>
+           <CustomToast ref = "defaultToastBottom"/>
+           <Loader
+          loading={this.state.loading} />
+          </View>
       </ImageBackground>
      
     );
 }
 }
+export default withNavigation(ForgotPassword);
 
 

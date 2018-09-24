@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {Platform, Text, View, TextInput, Image, ToastAndroid, ImageBackground, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
+import {Platform, Text, View, TextInput, Image, ToastAndroid, ImageBackground, BackAndroid, DeviceEventEmitter,  BackHandler, TouchableOpacity, StatusBar, ScrollView, TouchableNativeFeedback} from 'react-native';
 import styles from '../styles/styles';
-import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+import { GoogleSignin } from 'react-native-google-signin';
 import { LoginManager,   AccessToken } from 'react-native-fbsdk';
 import Service from '../services/Service';
 import Constants from '../constants/Constants';
 import CustomToast from './CustomToast';
 import Loader from './Loader';
-
-
 
 
 export default class Login extends Component {
@@ -24,20 +22,25 @@ export default class Login extends Component {
     }
     service = new Service();
     constants = new Constants();
+   
   }
-  componentDidMount() {
-    this.setupGoogleSignin();
-  } 
 
+
+    componentDidMount = () => {
+   this.setupGoogleSignin();
+  
+  }
+ 
   fbSignIn = () =>{
     LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
       result => {
+        if(result.isCancelled == false)
+        {
         AccessToken.getCurrentAccessToken().then(
           (data) => {
-                console.log(data.accessToken)
                 this.getUserProfile(data.accessToken);
-                console.log(data.userID);
-      });
+        });
+       }
       },
       error => {
         console.log('Login fail with error: ' + error);
@@ -64,7 +67,6 @@ export default class Login extends Component {
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
-        console.log(userInfo.user);
       service.saveUserData('user', userInfo.user);
         this.props.navigation.navigate('Home');
       } catch (error) {
@@ -77,38 +79,34 @@ export default class Login extends Component {
       fetch('https://graph.facebook.com/v2.9/me?fields=picture.width(720).height(720).as(picture_large),name,email,friends&access_token=' + token)
       .then((response) => response.json())
       .then((json) => {
-       // console.log('loginpage', json);
         service.saveUserData('user', json);
-        this.props.navigation.navigate('Home', { user: json })
+        this.props.navigation.navigate('Home')
       })
       .catch((err) => {
       //  alert(JSON.stringify(err))
       })
      
-      
-   
   }
 
-  logOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      this.setState({ user: null }); // Remember to remove the user from your app's state as well
-    } catch (error) {
-      console.error(error);
-    }
-  };
   
       goToSignUp = () =>{
        this.props.navigation.navigate('SignUp')
       }
+
+      goToHome = () =>{
+        service.saveUserData('user', "");
+        this.props.navigation.navigate('Home')
+      }
       login = () =>{
-        if ( !service.validateEmail(this.state.email)) {
-          this.setState(() => ({ emailFormatError: "Proper Email Format is Required"}));
-        } 
-        else{
-          this.setState(() => ({ emailFormatError: null}));
+        if (service.validateEmail(this.state.email))
+        {
+          //alert("email correct")
+          this.setState ({ emailFormatError: ''});
         }
+        else{
+          this.setState ({ emailFormatError: "Incorrect Email"});
+        }
+             
         if (this.state.email.trim() === "") {
           this.setState(() => ({ emailError: " Email is required."}));
           this.setState(() => ({ emailFormatError: null}));
@@ -121,20 +119,19 @@ export default class Login extends Component {
           this.setState(() => ({ passwordError: null}));
         }
         
-        if(this.state.email && this.state.password)
+        if(this.state.email && this.state.password && service.validateEmail(this.state.email))
         {
          this.setState ({ loading: true});
           setTimeout(() => 
           {this.setState({loading: false})
-          this.props.navigation.navigate('Home')
+          service.saveUserData('user', "");
+         this.props.navigation.navigate('Home')
            }, 3000)
           }
-        
-
        
       //  this.refs.defaultToastBottom.ShowToastFunction('Login SuccessFull');
       
-       // alert(this.state.password)
+      
        }
        goToForgot = () =>{
         this.props.navigation.navigate('ForgotPassword')
@@ -148,7 +145,6 @@ export default class Login extends Component {
 
 
   render() {
-    console.log(constants.logo);
     return (
       
       <ImageBackground
@@ -173,18 +169,15 @@ export default class Login extends Component {
                 <View style={{flex:1}}>
              <View style={styles.rowAlign}>
              <Image source={constants.emailicon} style={styles.icon}/>
-             <TextInput placeholder="Emailid" value={this.state.email} onChangeText={(text)=>this.setState({ email:text})}></TextInput>
+             <TextInput placeholder="Email Id" value={this.state.email} onChangeText={(text)=>this.setState({ email:text})}></TextInput>
             
              </View>
              {!!this.state.emailError && (
             <Text style={styles.error}>{this.state.emailError}</Text>
             )}
            
-           {!!this.state.emailFormatError && (
+          
             <Text style={styles.error}>{this.state.emailFormatError}</Text>
-             )}
-            
-             
              <View style={styles.rowAlign}>
              <Image source={constants.passwordicon} style={styles.icon}/>
              <TextInput placeholder="Password" value={this.state.password}  secureTextEntry={true} onChangeText={(text)=> this.setState({ password:text})}></TextInput>
@@ -204,7 +197,7 @@ export default class Login extends Component {
             </TouchableNativeFeedback>
              </View>
       <View style={styles.center}>
-      <Text styles={styles} onPress={() => this.goToForgot()}>ForgotPassword ?</Text>
+      <Text styles={styles.forgotText} onPress={() => this.goToForgot()}>FORGOT PASSWORD ?</Text>
       <View style={styles.borderWidth2}>
       <View
         style={styles.textBorder2}
@@ -218,8 +211,8 @@ export default class Login extends Component {
               >
       </View>
       </View>
-      <View style={styles.center}>
-      <Text styles={styles.textCenter} onPress={() => this.logOut()}>Or Connect With</Text>
+      <View style={styles.connect}>
+      <Text styles={styles.textCenter} >OR CONNECT WITH</Text>
       </View>
       <View style={styles.borderWidth3}>
       <View
@@ -237,7 +230,7 @@ export default class Login extends Component {
       </TouchableNativeFeedback>
       </View>
       <View style={styles.bottomText}>
-        <Text>You Dont Have An Account? <Text style={styles.red} onPress={() => this.goToSignUp()}>Sign up</Text></Text>
+        <Text>You Dont Have An Account? <Text style={styles.signUpFont} onPress={() => this.goToSignUp()}>SIGN UP</Text></Text>
       </View>
     
       </View>

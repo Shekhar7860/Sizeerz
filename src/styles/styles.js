@@ -13,8 +13,9 @@ export default styles = StyleSheet.create({
     paddingVertical: padding.lg,
     paddingHorizontal: padding.xl
   },
-  red: {
-    color:colors.red
+  signUpFont: {
+    color:colors.red,
+    fontSize:padding.ms
   },
   container: {
     flex: 1,
@@ -23,6 +24,7 @@ export default styles = StyleSheet.create({
   loginText: {
     color:colors.red,
     padding:padding.sm,
+    width:42
     },
     alignrow:{
       flexDirection:'row',
@@ -34,12 +36,13 @@ export default styles = StyleSheet.create({
     },
     cardContainer:{
      width:'80%',
-     backgroundColor:colors.white,
+     backgroundColor:"#f8f8f8",
      padding:padding.sm,
      height:225,
-     borderColor: colors.black,
+     borderColor: colors.transparent,
      borderWidth: 1,
      marginTop:-padding.sm,
+     borderRadius:10
     }, 
     messageBox:{
       width:'90%',
@@ -204,9 +207,14 @@ paddingTop:4,
    paddingTop:20,
    alignItems:align.center
  },
+ connect:{
+  paddingTop:20,
+  alignItems:align.center,
+  width:'40%'
+},
  borderWidth2 : {
   paddingTop:2,
-  width:98
+  width:128
 },
 textBorder2:{
   borderBottomColor: colors.black,
@@ -226,7 +234,7 @@ textCenter:{
 },
 borderWidth3 : {
   paddingTop:18,
-  width:95
+  width:'20%'
 },
 bottomText:{
   alignItems:align.center,
@@ -264,7 +272,8 @@ cardContainerSignUp:{
   paddingTop:5,
    },
    forgotText:{
-     paddingTop:padding.md
+     paddingTop:padding.md,
+     width:'100%'
    },
    hamburgerIcon:{
      width:30,
@@ -287,10 +296,10 @@ cardContainerSignUp:{
      alignItems:align.center,
      },
     profilePic:{
-      marginTop:30,
+      marginTop:20,
       borderRadius:100,
-      width:'40%',
-     height:'40%'
+      width:80,
+     height:80
     },
     userName:{
       paddingTop:padding.sm,
@@ -346,5 +355,94 @@ cardContainerSignUp:{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-around'
-      }
+      },
+      footer:{
+        position:'absolute',
+        top:560
+      },
+      staticIcon:{
+        width:25,
+        height:20
+      },
+      forgotText:{
+       paddingTop:padding.sm
+      },
+      textWidth:{
+        width:'100%'
+      },
+      iconsAlign:{
+      flexDirection:'row'
+      
+      },
+      shareIcon:{
+        width:25,
+        height:25
+      },
+      viewWidth:{
+        width:'42%'
+      },
+      viewWidthEmpty:{
+        width:'16%'
+      },
+      rightAlign:{
+        textAlign:'right'
+      },
+      white:{
+        color:colors.white
+      },
+      topPadding:{
+        paddingTop:padding.md
+      },
+      topMargin:{
+        paddingTop:padding.sm
+      },
+      list:{
+       
+        flexDirection:'row',
+        marginTop:20,
+        flexWrap:'nowrap'
+      },
+      listIconsWidth:{
+      width:'25%'
+    },
+    listItemsBlank:{
+      width:10
+    },
+    listTextWidth:{
+      width:230
+    },
+    listIconsWidth2:{
+      width:60
+    },
+    listTextWidth2:{
+      width:'60%'
+    },
+    listToggleIconWidth2:{
+      width:'10%'
+    },
+    toggleIcon:{
+      width:100,
+      height:50
+    },
+    listTextFontSize:{
+      fontSize:20,
+      textAlign: "left",
+      display:'flex'
+    },
+    switch:{
+      width:70
+    },
+    cameraIcon:{
+      position:'absolute', 
+      bottom:20,
+      width:35,
+      top:62,
+      left:164,
+      height:35,
+      overflow:'hidden'
+    }
+    
+    
+      
+
 })
